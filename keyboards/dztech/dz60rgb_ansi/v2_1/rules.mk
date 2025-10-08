@@ -1,0 +1,49 @@
+BOOTLOADER_SIZE = 6144
+
+# defaul
+BOOTMAGIC_ENABLE = yes # DO NOT REMOVE
+NKRO_ENABLE ?= yes
+LTO_ENABLE = yes
+EXTRAKEY_ENABLE = yes
+
+# debugging
+CONSOLE_ENABLE ?= yes
+KEYCODE_STRING_ENABLE = no
+AVR_USE_MINIMAL_PRINTF = yes
+
+# reducing size
+MUSIC_ENABLE = no
+
+# RGB
+RGB_MATRIX_ENABLE=yes
+RGB_MATRIX_CUSTOM_USER ?= no
+
+# split 60
+COMBO_ENABLE = yes
+TAP_DANCE_ENABLE ?= yes
+MOUSEKEY_ENABLE = yes
+
+CAPS_WORD_ENABLE ?= no
+LAYER_LOCK_ENABLE = no
+REPEAT_KEY_ENABLE = no
+
+# Don't remeber
+UNICODE_ENABLE = no
+UNICODEMAP_ENABLE = no
+UCIS_ENABLE = no
+UNICODE_COMMON = no
+AUTOCORRECT_ENABLE ?= no
+GRAVE_ESC_ENABLE ?= no
+SPACE_CADET_ENABLE ?= no
+
+SELECT_WORD_ENABLE ?= no
+ifeq ($(strip $(SELECT_WORD_ENABLE)), yes)
+	OPT_DEFS += -DSELECT_WORD_ENABLE
+	SRC += features/select_word.c
+endif
+
+# KEYCODE_STRING_ENABLE ?= no
+# ifeq ($(strip $(KEYCODE_STRING_ENABLE)), yes)
+# 	OPT_DEFS += -DKEYCODE_STRING_ENABLE
+# 	SRC += features/keycode_string.c
+# endif
