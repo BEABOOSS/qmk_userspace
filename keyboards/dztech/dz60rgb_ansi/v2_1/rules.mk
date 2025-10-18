@@ -1,3 +1,4 @@
+BOOTLOADER = lufa-dfu
 BOOTLOADER_SIZE = 6144
 
 # defaul
