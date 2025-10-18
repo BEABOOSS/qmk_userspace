@@ -8,7 +8,7 @@ EXTRAKEY_ENABLE = yes
 
 # debugging
 CONSOLE_ENABLE ?= yes
-KEYCODE_STRING_ENABLE = no
+# KEYCODE_STRING_ENABLE = no
 AVR_USE_MINIMAL_PRINTF = yes
 
 # reducing size
@@ -39,11 +39,11 @@ SPACE_CADET_ENABLE ?= no
 SELECT_WORD_ENABLE ?= no
 ifeq ($(strip $(SELECT_WORD_ENABLE)), yes)
 	OPT_DEFS += -DSELECT_WORD_ENABLE
-	SRC += features/select_word.c
+	SRC += ../../../../features/select_word.c
 endif
 
-# KEYCODE_STRING_ENABLE ?= no
-# ifeq ($(strip $(KEYCODE_STRING_ENABLE)), yes)
-# 	OPT_DEFS += -DKEYCODE_STRING_ENABLE
-# 	SRC += features/keycode_string.c
-# endif
+KEYCODE_STRING_ENABLE ?= no
+ifeq ($(strip $(KEYCODE_STRING_ENABLE)), yes)
+	OPT_DEFS += -DKEYCODE_STRING_ENABLE
+	SRC += ../../../../features/keycode_string.c
+endif

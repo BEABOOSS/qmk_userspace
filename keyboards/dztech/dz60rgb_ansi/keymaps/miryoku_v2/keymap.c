@@ -1,2 +1,2 @@
 #include QMK_KEYBOARD_H
-#include "../../../../../layouts/miryoku/v2/keymap.c"
+#include "../../../../../layouts/miryoku/v3/keymap.c"

@@ -161,7 +161,7 @@ combo_t key_combos[] = {
 ///////////////////////////////////////////////////////////////////////////////
 // Tap-hold configuration (https://docs.qmk.fm/tap_hold)
 ///////////////////////////////////////////////////////////////////////////////
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t* record) {
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case HRM_S:
         case HRM_E:
@@ -263,7 +263,7 @@ uint16_t get_alt_repeat_key_keycode_user(uint16_t keycode, uint8_t mods) {
 // the Repeat Key is pressed next, it produces `repeat_keycode`. This helper is
 // used for several macros below in my process_record_user() function.
 #define MAGIC_STRING(str, repeat_keycode) magic_send_string_P(PSTR(str), (repeat_keycode))
-static void magic_send_string_P(const char* str, uint16_t repeat_keycode) {
+static void magic_send_string_P(const char *str, uint16_t repeat_keycode) {
     send_string_P(str); // Send the string.
     set_last_keycode(repeat_keycode);
 }
@@ -466,7 +466,7 @@ void keyboard_post_init_user(void) {
 #endif // RGB_MATRIX_CUSTOM_USER
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef RGB_MATRIX_CUSTOM_USER
     lighting_activity_trigger();
 #endif // RGB_MATRIX_CUSTOM_USER

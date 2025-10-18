@@ -4,6 +4,10 @@
         [
             "dztech/dz60rgb_ansi/v2_1",
             "miryoku_v2"
+        ],
+        [
+            "crkbd/rev4_1/standard",
+            "beabooss"
         ]
     ]
 }
