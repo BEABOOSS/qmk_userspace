@@ -34,13 +34,13 @@ static inline uint8_t effective_layer_now(void) {
 
 // Replace the per-layer tap-dance functions with a single macro.
 #define TD_SET_DEF_FN(fname, target_layer)                  \
-    void fname(tap_dance_state_t* state, void* user_data) { \
+    void fname(tap_dance_state_t *state, void *user_data) { \
         if (state->count == 2) {                            \
             default_layer_set(1UL << (target_layer));       \
         }                                                   \
     }
 
-void u_td_fn_boot(tap_dance_state_t* state, void* user_data) {
+void u_td_fn_boot(tap_dance_state_t *state, void *user_data) {
     if (state->count == 2) {
         reset_keyboard();
     }
@@ -124,7 +124,7 @@ KEYCODE_STRING_NAMES_USER(
 // clang-format on
 
 #ifndef NO_DEBUG
-static const char* const LAYER_NAMES[LAYER_COUNT] = {"BASE", "NAV", "MOUSE", "MEDIA", "NUM", "SYM", "FUN", "GAME"};
+static const char *const LAYER_NAMES[LAYER_COUNT] = {"BASE", "NAV", "MOUSE", "MEDIA", "NUM", "SYM", "FUN", "GAME"};
 _Static_assert(LAYER_COUNT == (sizeof(LAYER_NAMES) / sizeof(LAYER_NAMES[0])), "Update LAYER_NAMES when layers change.");
 #endif // NO_DEBUG
 
@@ -216,6 +216,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+------------+-----------+-----------+-----------+--------+--------|  |-----------+------------+------------+------------+------------+--------|
                                             KC_APP,    KC_SPC,   KC_TAB,     U_NA,    U_NA,       U_NA
                                       //`--------------------------'  `--------------------------'
+    ),
+
+    [GAME] = LAYOUT_split_3x6_3(
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+       KC_TAB,    KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                         KC_J,    KC_L,    KC_U,    KC_Y, KC_QUOT,    U_NA,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT,    KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                         KC_H,    KC_N,    KC_E,    KC_I,   KC_O,    U_NA,
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LCTL,    KC_X,    KC_C,    KC_V,    KC_B,    KC_Z,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,    U_NA,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                        KC_ESC,  KC_SPC,  KC_TAB,      TS_ENT,  TN_BSP,   TF_DEL
+                                      //`--------------------------'  `--------------------------'
     )
 };
 
@@ -258,27 +270,38 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // Combos (https://docs.qmk.fm/features/combo)
 ///////////////////////////////////////////////////////////////////////////////
 enum combo_events {
-    CB_TNBSP_TFDEL_BASE,
+    CB_G_D_BASE,
     COMBO_EVENTS_COUNT, // keep last
 };
 
 const uint16_t PROGMEM thumbcombos_base_right[] = {LT(SYM, KC_ENT), LT(NUM, KC_BSPC), COMBO_END};
 const uint16_t PROGMEM thumbcombos_base_left[]  = {LT(NAV, KC_SPC), LT(MOUSE, KC_TAB), COMBO_END};
-const uint16_t PROGMEM thumbcombos_base_G_r[]   = {TN_BSP, TF_DEL, COMBO_END};
+const uint16_t PROGMEM thumbcombos_base_G_r[]   = {KC_G, KC_D, COMBO_END};
 const uint16_t PROGMEM thumbcombos_nav[]        = {KC_ENT, KC_BSPC, COMBO_END};
 const uint16_t PROGMEM thumbcombos_mouse[]      = {MS_BTN2, MS_BTN1, COMBO_END};
 const uint16_t PROGMEM thumbcombos_media[]      = {KC_MSTP, KC_MPLY, COMBO_END};
 const uint16_t PROGMEM thumbcombos_num[]        = {KC_0, KC_MINS, COMBO_END};
 const uint16_t PROGMEM thumbcombos_sym[]        = {KC_RPRN, KC_UNDS, COMBO_END};
 const uint16_t PROGMEM thumbcombos_fun[]        = {KC_SPC, KC_TAB, COMBO_END};
+
+// clang-format off
 combo_t                key_combos[]             = {
-    [CB_TNBSP_TFDEL_BASE] = COMBO_ACTION(thumbcombos_base_G_r), COMBO(thumbcombos_base_right, LT(FUN, KC_DEL)), COMBO(thumbcombos_base_left, LT(MEDIA, KC_ESC)), COMBO(thumbcombos_nav, KC_DEL), COMBO(thumbcombos_mouse, MS_BTN3), COMBO(thumbcombos_media, KC_MUTE), COMBO(thumbcombos_num, KC_DOT), COMBO(thumbcombos_sym, KC_LPRN), COMBO(thumbcombos_fun, KC_APP),
+    [CB_G_D_BASE] = COMBO_ACTION(thumbcombos_base_G_r),
+    COMBO(thumbcombos_base_right, LT(FUN, KC_DEL)),
+    COMBO(thumbcombos_base_left, LT(MEDIA, KC_ESC)),
+    COMBO(thumbcombos_nav, KC_DEL),
+    COMBO(thumbcombos_mouse, MS_BTN3),
+    COMBO(thumbcombos_media, KC_MUTE),
+    COMBO(thumbcombos_num, KC_DOT),
+    COMBO(thumbcombos_sym, KC_LPRN),
+    COMBO(thumbcombos_fun, KC_APP),
 };
+// clang-format on
 _Static_assert(COMBO_EVENTS_COUNT <= ARRAY_SIZE(key_combos), "key_combos[] missing COMBO_ACTION entries for some combo events.");
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
     switch (combo_index) {
-        case CB_TNBSP_TFDEL_BASE:
+        case CB_G_D_BASE:
             if (pressed) {
                 default_layer_set((layer_state_t)1 << BASE);
             }
@@ -289,7 +312,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 ///////////////////////////////////////////////////////////////////////////////
 // Tap-hold configuration (https://docs.qmk.fm/tap_hold)
 ///////////////////////////////////////////////////////////////////////////////
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t* record) {
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case HRM_S:
         case HRM_E:
@@ -365,14 +388,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 // Log effective (momentary | default) layer in callbacks.
 layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t     layer = effective_layer_state(state);
-    const char* name  = (layer < LAYER_COUNT) ? LAYER_NAMES[layer] : "?";
+    const char *name  = (layer < LAYER_COUNT) ? LAYER_NAMES[layer] : "?";
     dprintf("Layer changed: %u (%s)\n", layer, name);
     return state;
 }
 
 layer_state_t default_layer_state_set_user(layer_state_t state) {
     uint8_t     layer = effective_layer_state(state);
-    const char* name  = (layer < LAYER_COUNT) ? LAYER_NAMES[layer] : "?";
+    const char *name  = (layer < LAYER_COUNT) ? LAYER_NAMES[layer] : "?";
     dprintf("Default layer changed: %u (%s)\n", layer, name);
     return state;
 }
@@ -388,7 +411,7 @@ void keyboard_post_init_user(void) {
 #endif // NO_DEBUG
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef SELECT_WORD_ENABLE
     if (!process_select_word(keycode, record)) {
         return false;
@@ -397,7 +420,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 #ifndef NO_DEBUG
     if (record->event.pressed) {
         uint8_t     layer = effective_layer_now();
-        const char* name  = (layer < LAYER_COUNT) ? LAYER_NAMES[layer] : "?";
+        const char *name  = (layer < LAYER_COUNT) ? LAYER_NAMES[layer] : "?";
         dprintf("Layer: %u (%s)\n", layer, name);
 #    ifdef KEYCODE_STRING_ENABLE
         dprintf("kc: %s\n", get_keycode_string(keycode));
